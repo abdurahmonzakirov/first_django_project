@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+{% block content %}
+
+<h2>{{article.article_title}}</h2>
+
+<p>{{article.article_text}}</p>
+
+<em>{{article.article_date}}!</em>
+
+
+{% if article.was_published_recently %}
+<strong>НОВАЯ СТАТЬЯ!</strong>
+{% endif %}
+
+<hr>
+
+{% if latest_comment_list %}
+
+    {% for c in latest_comment_list %}
+        <p>
+            <strong>{{c.author_name}}</strong>
+            <p>{{c.comment_text}}</p>
+        </p>
+{% endfor %}
+
+{% else %}
+Коментарии не найдены! Станьте первым :)
+{% endif %}
+
+
+
+<hr>
+
+<form action="{% url 'articles:leave_comment' article.id %}" method="GET">
+
+    {% csrf_token %}
+
+    <input type="text" required placeholder="Ваше имя" name="Your_name"><br>
+    <textarea name="text" required="" placeholder="Ваш коментарий" cols="30" rows="10"></textarea><br>
+
+    <button type="submit">Оставить свой коментарий</button>
+
+</form>
+
+{% endblock %}
